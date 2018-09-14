@@ -2,14 +2,22 @@
 #!/usr/bin/env python
 import os
 from app import create_app, db
-from app.models import User, Role, Permission, Post
+from app.models import User, Role, Permission, Post, Comment
 from flask_script import Manager, Shell, Server
 from flask_migrate import Migrate, MigrateCommand
 from app.fake import users, posts
+from flask_admin.contrib.sqla import ModelView
+from app.admin.views import MyView
+from app.flaskyModelView import UserModelView, PostModelView, CommentModelView
+import flask_admin as admin
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 manager = Manager(app)
 migrate = Migrate(app, db)
+admin = admin.Admin(app, u'管理后台', index_view=MyView(), base_template='admin/my_master.html', template_mode='bootstrap3')
 
+admin.add_view(UserModelView(db.session, name=u'用户'))
+admin.add_view(PostModelView(db.session, name=u'文章'))
+admin.add_view(CommentModelView(db.session, name=u'评论'))
 def make_shell_context():
 	return dict(app=app, db=db, User=User, Role=Role, Permission=Permission, users=users, posts=posts, Post=Post)
 manager.add_command("shell", Shell(make_context=make_shell_context))
@@ -19,13 +27,12 @@ manager.add_command('runserver', Server(host='0.0.0.0', port=5000))
 
 
 
+
 COV = None
 if os.environ.get('FLASK_COVERAGE'):
 	import coverage
 	COV = coverage.coverage(branch=True, include='app/*')
 	COV.start()
-
-
 
 
 

@@ -30,6 +30,9 @@ class Role(db.Model):
 	def __repr__(self):
 		return '<Role %r>' % self.name
 
+	def __str__(self):
+		return self.name
+
 	@staticmethod
 	def insert_roles():
 		roles = {
@@ -72,6 +75,9 @@ class Comment(db.Model):
 			tags=allowed_tags, strip=True
 			))
 
+	def __str__(self):
+		return self.body
+
 db.event.listen(Comment.body, 'set', Comment.on_change_body)
 
 class Post(db.Model):
@@ -112,6 +118,8 @@ class Post(db.Model):
 			'comment_count': self.comments.count()
 		}
 		return json_post
+	def __str__(self):
+		return self.body
 
 # 监听Postbody 的改变，改变之后调用on_change_body函数
 db.event.listen(Post.body, 'set', Post.on_change_body)
@@ -145,6 +153,7 @@ class User(UserMixin, db.Model):
 	email = db.Column(db.String(64), unique=True, index=True)
 	username = db.Column(db.String(64), unique=True, index=True)
 	role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+
 	password_hash = db.Column(db.String(128))
 	confirmed = db.Column(db.Boolean, default=False)
 
@@ -177,6 +186,8 @@ class User(UserMixin, db.Model):
 
 	comments = db.relationship('Comment', backref='author', lazy='dynamic')
 
+	def __str__(self):
+		return self.name
 
 	def to_json(self):
 		json_user = {

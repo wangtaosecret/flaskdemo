@@ -9,6 +9,9 @@ from flask_login import LoginManager
 from flask_pagedown import PageDown
 import pymysql
 
+from flask_babelex import Babel
+
+
 bootstrap = Bootstrap()
 mail = Mail()
 moment = Moment()
@@ -18,7 +21,15 @@ login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 pagedown = PageDown()
 
+
+babel = Babel()
 pymysql.install_as_MySQLdb()
+
+
+
+		
+
+
 def create_app(config_name):
 	app = Flask(__name__)
 	app.config.from_object(config[config_name])
@@ -30,7 +41,7 @@ def create_app(config_name):
 	db.init_app(app)
 	login_manager.init_app(app)
 	pagedown.init_app(app)
-
+	babel.init_app(app)
 	from .main import main as main_blueprint
 	app.register_blueprint(main_blueprint)
 
