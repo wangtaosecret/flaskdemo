@@ -3,7 +3,7 @@ altgraph==0.10.2
 appnope==0.1.0
 backports.shutil-get-terminal-size==1.0.0
 bdist-mpkg==0.5.0
-bleach==2.1.4
+bleach==3.1.1
 blinker==1.4
 certifi==2018.8.13
 chardet==3.0.4
