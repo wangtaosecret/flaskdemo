@@ -32,7 +32,7 @@ ipaddress==1.0.22
 ipython==5.8.0
 ipython-genutils==0.2.0
 itsdangerous==0.24
-Jinja2==2.10
+Jinja2==2.11.3
 macholib==1.5.1
 Mako==1.0.7
 Markdown==2.6.11
